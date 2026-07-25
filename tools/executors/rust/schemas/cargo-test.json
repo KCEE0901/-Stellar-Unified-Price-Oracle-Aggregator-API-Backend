@@ -1,0 +1,29 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "$id": "https://stellar-oracle.io/schemas/cargo-test.json",
+  "title": "Cargo Test",
+  "description": "Run Rust tests using Cargo",
+  "type": "object",
+  "properties": {
+    "cwd": {
+      "type": "string",
+      "description": "Working directory for cargo command"
+    },
+    "verbose": {
+      "type": "boolean",
+      "description": "Verbose output",
+      "default": false
+    },
+    "testName": {
+      "type": "string",
+      "description": "Filter tests by name"
+    },
+    "nocapture": {
+      "type": "boolean",
+      "description": "Show print statements",
+      "default": false
+    }
+  },
+  "required": ["cwd"],
+  "additionalProperties": false
+}

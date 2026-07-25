@@ -1,0 +1,83 @@
+{
+  "$schema": "node_modules/nx/schemas/nx-schema.json",
+  "extends": "nx/presets/core",
+  "defaultBase": "main",
+  "namedInputs": {
+    "default": ["{projectRoot}/**/*", "sharedGlobals"],
+    "sharedGlobals": ["{workspaceRoot}/.env*", "{workspaceRoot}/tsconfig.base.json"],
+    "rustFiles": ["{projectRoot}/src/**/*", "{projectRoot}/Cargo.toml", "{projectRoot}/Cargo.lock"],
+    "typeScriptFiles": ["{projectRoot}/src/**/*", "{projectRoot}/tsconfig.json"],
+    "testFiles": ["!{projectRoot}/**/*.spec.ts"]
+  },
+  "targetDefaults": {
+    "build": {
+      "cache": true,
+      "inputs": ["default"],
+      "outputs": ["{projectRoot}/dist", "{projectRoot}/target"],
+      "dependsOn": ["^build"]
+    },
+    "test": {
+      "cache": true,
+      "inputs": ["default", "testFiles"],
+      "outputs": ["{projectRoot}/coverage"],
+      "dependsOn": ["^build"]
+    },
+    "lint": {
+      "cache": true,
+      "inputs": ["default"]
+    },
+    "clippy": {
+      "cache": true,
+      "inputs": ["rustFiles"],
+      "dependsOn": ["^build"]
+    }
+  },
+  "nxCloudAccessToken": "NXC_ACCESS_TOKEN_PLACEHOLDER",
+  "tasksRunnerOptions": {
+    "default": {
+      "runner": "nx/tasks-runners/default",
+      "options": {
+        "cacheableOperations": ["build", "test", "lint", "clippy"],
+        "useDaemonProcess": true,
+        "parallel": 4
+      }
+    },
+    "cloud": {
+      "runner": "@nx/nx-cloud",
+      "options": {
+        "accessToken": "NXC_ACCESS_TOKEN_PLACEHOLDER",
+        "canTrackAnalytics": true,
+        "showUsageWarnings": true
+      }
+    }
+  },
+  "implicitDependencies": {
+    "package.json": {
+      "dependencies": "*",
+      "devDependencies": "*"
+    },
+    "tsconfig.base.json": "*"
+  },
+  "plugins": [
+    {
+      "plugin": "@nx/eslint/plugin",
+      "options": {
+        "targetName": "lint"
+      }
+    },
+    {
+      "plugin": "@nx/typescript/plugin",
+      "options": {
+        "typeCheckingStrategy": "incremental",
+        "typeChecking": {
+          "targetName": "type-check"
+        }
+      }
+    }
+  ],
+  "generators": {
+    "@nx/typescript:library": {
+      "unitTestRunner": "vitest"
+    }
+  }
+}

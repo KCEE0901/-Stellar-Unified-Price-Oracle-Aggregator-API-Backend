@@ -1,0 +1,35 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "$id": "https://stellar-oracle.io/schemas/cargo-clippy.json",
+  "title": "Cargo Clippy",
+  "description": "Run Clippy linter using Cargo",
+  "type": "object",
+  "properties": {
+    "cwd": {
+      "type": "string",
+      "description": "Working directory for cargo command"
+    },
+    "allTargets": {
+      "type": "boolean",
+      "description": "Check all targets (bins, tests, examples)",
+      "default": false
+    },
+    "allFeatures": {
+      "type": "boolean",
+      "description": "Enable all features",
+      "default": false
+    },
+    "verbose": {
+      "type": "boolean",
+      "description": "Verbose output",
+      "default": false
+    },
+    "denyWarnings": {
+      "type": "boolean",
+      "description": "Treat warnings as errors",
+      "default": false
+    }
+  },
+  "required": ["cwd"],
+  "additionalProperties": false
+}

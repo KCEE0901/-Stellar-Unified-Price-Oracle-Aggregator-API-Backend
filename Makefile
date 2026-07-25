@@ -1,7 +1,14 @@
-.PHONY: all build clean test deploy help deploy-soroban
+.PHONY: all build clean test deploy help deploy-soroban nx-build nx-test nx-lint nx-graph
 
 help:
 	@echo "Stellar Price Oracle Aggregator"
+	@echo ""
+	@echo "  Nx targets:"
+	@echo "  make nx-build         Build all projects via Nx"
+	@echo "  make nx-test          Test all projects via Nx"
+	@echo "  make nx-lint          Lint all projects via Nx"
+	@echo "  make nx-graph         Display dependency graph"
+	@echo "  make nx-affected      Build affected projects (base: main)"
 	@echo ""
 	@echo "  build targets:"
 	@echo "  make build-soroban    Build the Soroban contract"
@@ -29,6 +36,21 @@ help:
 	@echo ""
 	@echo "  utility:"
 	@echo "  make clean            Clean build artifacts"
+
+nx-build:
+	npm run build
+
+nx-test:
+	npm run test
+
+nx-lint:
+	npm run lint
+
+nx-graph:
+	npm run graph
+
+nx-affected:
+	npm run build:affected
 
 install:
 	cd services/aggregator && npm install

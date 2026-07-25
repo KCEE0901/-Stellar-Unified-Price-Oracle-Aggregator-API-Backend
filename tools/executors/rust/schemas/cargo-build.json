@@ -1,0 +1,30 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "$id": "https://stellar-oracle.io/schemas/cargo-build.json",
+  "title": "Cargo Build",
+  "description": "Build Rust project using Cargo",
+  "type": "object",
+  "properties": {
+    "cwd": {
+      "type": "string",
+      "description": "Working directory for cargo command"
+    },
+    "release": {
+      "type": "boolean",
+      "description": "Build in release mode",
+      "default": true
+    },
+    "features": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Feature flags to enable"
+    },
+    "verbose": {
+      "type": "boolean",
+      "description": "Verbose output",
+      "default": false
+    }
+  },
+  "required": ["cwd"],
+  "additionalProperties": false
+}

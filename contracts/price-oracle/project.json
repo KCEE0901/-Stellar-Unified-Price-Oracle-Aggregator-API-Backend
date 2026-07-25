@@ -1,0 +1,42 @@
+{
+  "name": "price-oracle",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "library",
+  "sourceRoot": "src",
+  "prefix": "contract",
+  "targets": {
+    "build": {
+      "executor": "@stellar-oracle/nx-rust:cargo-build",
+      "options": {
+        "release": true,
+        "cwd": "contracts/price-oracle"
+      },
+      "configurations": {
+        "debug": {
+          "release": false
+        }
+      }
+    },
+    "test": {
+      "executor": "@stellar-oracle/nx-rust:cargo-test",
+      "options": {
+        "cwd": "contracts/price-oracle"
+      }
+    },
+    "clippy": {
+      "executor": "@stellar-oracle/nx-rust:cargo-clippy",
+      "options": {
+        "cwd": "contracts/price-oracle",
+        "allTargets": true
+      }
+    },
+    "check": {
+      "executor": "@stellar-oracle/nx-rust:cargo-check",
+      "options": {
+        "cwd": "contracts/price-oracle",
+        "allTargets": true
+      }
+    }
+  },
+  "tags": ["type:contract", "scope:price-oracle", "language:rust"]
+}
