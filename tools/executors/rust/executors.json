@@ -1,0 +1,24 @@
+{
+  "executors": {
+    "cargo-build": {
+      "implementation": "./dist/cargo-build.js",
+      "schema": "./schemas/cargo-build.json",
+      "description": "Build Rust/Cargo projects with Nx integration"
+    },
+    "cargo-test": {
+      "implementation": "./dist/cargo-test.js",
+      "schema": "./schemas/cargo-test.json",
+      "description": "Run Rust tests via Cargo with Nx integration"
+    },
+    "cargo-clippy": {
+      "implementation": "./dist/cargo-clippy.js",
+      "schema": "./schemas/cargo-clippy.json",
+      "description": "Run Clippy linter via Cargo with Nx integration"
+    },
+    "cargo-check": {
+      "implementation": "./dist/cargo-check.js",
+      "schema": "./schemas/cargo-check.json",
+      "description": "Check Rust code via Cargo with Nx integration"
+    }
+  }
+}

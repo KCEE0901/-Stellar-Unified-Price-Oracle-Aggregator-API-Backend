@@ -1,0 +1,16 @@
+{
+  "name": "@stellar-oracle/nx-rust",
+  "version": "1.0.0",
+  "description": "Nx plugin for Rust/Cargo integration",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": ["dist", "executors"],
+  "executors": "dist/executors.json",
+  "peerDependencies": {
+    "nx": "^19.0.0"
+  },
+  "devDependencies": {
+    "@nx/devkit": "^19.0.0",
+    "typescript": "^5.0.0"
+  }
+}
