@@ -13,7 +13,9 @@ import { EncryptionManager } from './encryption';
 import { createCloudProvider, CloudStorageProvider } from './cloud-storage';
 import { IdempotencyKeyManager } from './idempotency';
 
-const pipelineAsync = promisify(pipeline);
+const pipelineAsync = promisify(pipeline) as (
+  ...args: Array<Readable | Writable | object>
+) => Promise<void>;
 
 export class ExportEngine {
   private jobs: Map<string, ExportJob> = new Map();
@@ -72,7 +74,7 @@ export class ExportEngine {
 
       const sourceStream = this.createDataStream(request);
 
-      let pipeline_streams: (Readable | Writable)[] = [sourceStream, formatter.createTransform()];
+      let pipeline_streams: Array<Readable | Writable | object> = [sourceStream, formatter.createTransform()];
 
       let encryptionKey: Buffer | null = null;
       if (request.encryptionConfig?.enabled) {

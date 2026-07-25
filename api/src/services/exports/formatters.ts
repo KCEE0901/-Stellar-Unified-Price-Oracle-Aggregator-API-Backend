@@ -54,7 +54,7 @@ export class CSVFormatter extends BaseStreamFormatter {
           this.rowCount++;
           callback(null, buffer);
         } catch (error) {
-          callback(error);
+          callback(error instanceof Error ? error : new Error(String(error)));
         }
       },
     });
@@ -73,7 +73,7 @@ export class NDJSONFormatter extends BaseStreamFormatter {
           this.rowCount++;
           callback(null, buffer);
         } catch (error) {
-          callback(error);
+          callback(error instanceof Error ? error : new Error(String(error)));
         }
       },
     });
@@ -110,7 +110,7 @@ export class ParquetFormatter extends BaseStreamFormatter {
             callback();
           }
         } catch (error) {
-          callback(error);
+          callback(error instanceof Error ? error : new Error(String(error)));
         }
       },
       flush: (callback) => {
@@ -162,7 +162,7 @@ export class ArrowIPCFormatter extends BaseStreamFormatter {
           this.rowCount++;
           callback(null, arrowData);
         } catch (error) {
-          callback(error);
+          callback(error instanceof Error ? error : new Error(String(error)));
         }
       },
     });

@@ -1,5 +1,5 @@
 import { EventEmitter } from 'events';
-import { ExportRequest, ExportStatus } from './types';
+import { ExportRequest, ExportStatus, ExportFormat } from './types';
 import { ExportEngine } from './engine';
 
 export interface CDCConfig {
@@ -54,7 +54,7 @@ export class ChangeDataCapture extends EventEmitter {
       const now = new Date();
 
       const exportRequest: ExportRequest = {
-        format: 'parquet',
+        format: ExportFormat.PARQUET,
         assetPair: 'BTC-USD',
         startTime: this.lastProcessedTimestamp,
         endTime: now,

@@ -12,7 +12,7 @@ export function createExportRoutes(engine: ExportEngine): Router {
 
       const idempotencyKey = req.headers['idempotency-key'] as string;
 
-      const job = await engine.createExportJob(validated, idempotencyKey);
+      const job = await engine.createExportJob(validated as any, idempotencyKey);
 
       res.status(202).json({
         id: job.id,

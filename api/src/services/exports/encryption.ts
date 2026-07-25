@@ -51,7 +51,7 @@ export class EncryptionManager {
           const encrypted = cipher.update(chunk);
           callback(null, encrypted);
         } catch (error) {
-          callback(error);
+          callback(error instanceof Error ? error : new Error(String(error)));
         }
       },
       flush(callback) {
@@ -61,7 +61,7 @@ export class EncryptionManager {
           // Prepend IV and auth tag to the encrypted stream
           callback(null, Buffer.concat([iv, authTag, final]));
         } catch (error) {
-          callback(error);
+          callback(error instanceof Error ? error : new Error(String(error)));
         }
       },
     });
@@ -80,7 +80,7 @@ export class EncryptionManager {
           const decrypted = decipher.update(chunk);
           callback(null, decrypted);
         } catch (error) {
-          callback(error);
+          callback(error instanceof Error ? error : new Error(String(error)));
         }
       },
       flush(callback) {
@@ -88,7 +88,7 @@ export class EncryptionManager {
           const final = decipher.final();
           callback(null, final);
         } catch (error) {
-          callback(error);
+          callback(error instanceof Error ? error : new Error(String(error)));
         }
       },
     });
