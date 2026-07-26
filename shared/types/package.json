@@ -1,0 +1,14 @@
+{
+  "name": "@stellar-oracle/shared-types",
+  "version": "1.0.0",
+  "private": true,
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc --project tsconfig.lib.json",
+    "typecheck": "tsc --noEmit --project tsconfig.lib.json"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.0"
+  }
+}

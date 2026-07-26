@@ -11,6 +11,8 @@ import { WebSocketServer } from './ws-server';
 import { HealthServer } from './health-server';
 import AlertManager, { AlertThresholds } from './alert-manager';
 import { sourceCircuitBreaker } from './source-circuit-breaker';
+import { cepEngine } from './cep-engine';
+import { qualityScorer } from './quality-scorer';
 
 // In-process counters surfaced as structured log lines; the API /metrics
 // endpoint (prom-client) collects the canonical Prometheus metrics.
@@ -106,6 +108,23 @@ async function poll(): Promise<AggregatedPrice[]> {
     if (sourcePrices) {
       await alertManager.checkSourceDisagreement(ap.asset, sourcePrices);
     }
+
+    // Issue #124: Record quality metrics for each contributing source
+    const priceNum = parseFloat(ap.price);
+    for (const src of ap.sources) {
+      const sourceEntry = sourcePrices?.find((s: any) => s.source === src);
+      if (sourceEntry) {
+        qualityScorer.recordSubmission(src, ap.asset, parseFloat(String(sourceEntry.price)), ap.timestamp, 0, true);
+      }
+    }
+
+    // Issue #125: Feed the CEP engine for continuous rule evaluation
+    const cepSourcePrices = sourcePrices?.map((s: any) => ({
+      source: s.source as any,
+      price: parseFloat(String(s.price)),
+      timestamp: ap.timestamp * 1000,
+    }));
+    cepEngine.evaluate(ap, cepSourcePrices);
   }
 
   const unhealthy = sources.filter((s) => !s.health.healthy);

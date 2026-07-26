@@ -2,6 +2,11 @@
   "name": "@stellar-oracle/monorepo",
   "version": "1.0.0",
   "private": true,
+  "workspaces": [
+    "api",
+    "services/aggregator",
+    "shared/types"
+  ],
   "scripts": {
     "build:aggregator": "cd services/aggregator && npm run build",
     "build:api": "cd api && npm run build",
@@ -12,9 +17,17 @@
     "test:contract": "cd contracts/price-oracle && cargo test",
     "test:backend": "npm run test:aggregator && npm run test:api",
     "install:all": "cd services/aggregator && npm install && cd ../../api && npm install",
-    "prepare": "husky"
+    "prepare": "husky",
+    "nx:build": "nx run-many --target=build --all",
+    "nx:test": "nx run-many --target=test --all",
+    "nx:lint": "nx run-many --target=lint --all",
+    "nx:affected:build": "nx affected --target=build --base=main",
+    "nx:affected:test": "nx affected --target=test --base=main",
+    "nx:graph": "nx graph",
+    "shared:build": "cd shared/types && npx tsc --project tsconfig.lib.json"
   },
   "devDependencies": {
-    "husky": "^9.1.0"
+    "husky": "^9.1.0",
+    "nx": "^19.0.0"
   }
 }

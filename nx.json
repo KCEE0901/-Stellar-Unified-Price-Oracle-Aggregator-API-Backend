@@ -1,0 +1,136 @@
+{
+  "$schema": "./node_modules/nx/schemas/nx-schema.json",
+  "nxCloudId": "",
+  "defaultBase": "main",
+  "namedInputs": {
+    "default": ["{projectRoot}/**/*", "sharedGlobals"],
+    "production": [
+      "default",
+      "!{projectRoot}/**/?(*.)+(spec|test).[jt]s?(x)",
+      "!{projectRoot}/tsconfig.spec.json",
+      "!{projectRoot}/.eslintrc.json"
+    ],
+    "sharedGlobals": ["{workspaceRoot}/tsconfig.base.json", "{workspaceRoot}/eslint.config.js"]
+  },
+  "targetDefaults": {
+    "build": {
+      "dependsOn": ["^build"],
+      "inputs": ["production", "^production"],
+      "cache": true
+    },
+    "test": {
+      "dependsOn": ["^build"],
+      "inputs": ["default", "^production"],
+      "cache": true
+    },
+    "lint": {
+      "inputs": ["default", "{workspaceRoot}/eslint.config.js"],
+      "cache": true
+    },
+    "typecheck": {
+      "inputs": ["default"],
+      "cache": true
+    }
+  },
+  "plugins": [],
+  "projects": {
+    "api": {
+      "root": "api",
+      "projectType": "application",
+      "sourceRoot": "api/src",
+      "targets": {
+        "build": {
+          "executor": "nx:run-commands",
+          "options": { "command": "npm run build", "cwd": "api" }
+        },
+        "test": {
+          "executor": "nx:run-commands",
+          "options": { "command": "npm test", "cwd": "api" }
+        },
+        "lint": {
+          "executor": "nx:run-commands",
+          "options": { "command": "npx eslint src --ext .ts", "cwd": "api" }
+        },
+        "typecheck": {
+          "executor": "nx:run-commands",
+          "options": { "command": "npx tsc --noEmit", "cwd": "api" }
+        }
+      },
+      "tags": ["scope:api", "type:app"]
+    },
+    "aggregator": {
+      "root": "services/aggregator",
+      "projectType": "application",
+      "sourceRoot": "services/aggregator/src",
+      "targets": {
+        "build": {
+          "executor": "nx:run-commands",
+          "options": { "command": "npm run build", "cwd": "services/aggregator" }
+        },
+        "test": {
+          "executor": "nx:run-commands",
+          "options": { "command": "npm test", "cwd": "services/aggregator" }
+        },
+        "lint": {
+          "executor": "nx:run-commands",
+          "options": { "command": "npx eslint src --ext .ts", "cwd": "services/aggregator" }
+        },
+        "typecheck": {
+          "executor": "nx:run-commands",
+          "options": { "command": "npx tsc --noEmit", "cwd": "services/aggregator" }
+        }
+      },
+      "tags": ["scope:aggregator", "type:app"],
+      "implicitDependencies": ["shared-types"]
+    },
+    "shared-types": {
+      "root": "shared/types",
+      "projectType": "library",
+      "sourceRoot": "shared/types/src",
+      "targets": {
+        "build": {
+          "executor": "nx:run-commands",
+          "options": { "command": "npx tsc --project tsconfig.lib.json", "cwd": "shared/types" }
+        },
+        "lint": {
+          "executor": "nx:run-commands",
+          "options": { "command": "npx eslint src --ext .ts", "cwd": "shared/types" }
+        }
+      },
+      "tags": ["scope:shared", "type:lib"]
+    },
+    "contracts": {
+      "root": "contracts/price-oracle",
+      "projectType": "library",
+      "targets": {
+        "build": {
+          "executor": "nx:run-commands",
+          "options": { "command": "cargo build --release", "cwd": "contracts/price-oracle" }
+        },
+        "test": {
+          "executor": "nx:run-commands",
+          "options": { "command": "cargo test", "cwd": "contracts/price-oracle" }
+        },
+        "lint": {
+          "executor": "nx:run-commands",
+          "options": { "command": "cargo clippy -- -D warnings", "cwd": "contracts/price-oracle" }
+        }
+      },
+      "tags": ["scope:contracts", "type:lib", "platform:rust"]
+    }
+  },
+  "moduleBoundaries": [
+    {
+      "onlyDependOnLibsWithTags": ["scope:shared"],
+      "sourceTag": "scope:api"
+    },
+    {
+      "onlyDependOnLibsWithTags": ["scope:shared"],
+      "sourceTag": "scope:aggregator"
+    },
+    {
+      "allowedExternalImports": [],
+      "sourceTag": "scope:shared"
+    }
+  ]
+}
